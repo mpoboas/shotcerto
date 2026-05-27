@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --font-syne: "Syne", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-surface2: #1c1c1c;
+  --color-surface3: #222222;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border2: rgba(255, 255, 255, 0.13);
+  --color-text: #f0ede8;
+  --color-muted: #5a5a5a;
+  --color-muted2: #888888;
+  --color-accent: #e8ff47;
+  --color-accent-dim: rgba(232, 255, 71, 0.1);
+  --color-orange: #ff6b2b;
+  --color-orange-dim: rgba(255, 107, 43, 0.1);
+  --color-blue: #4da6ff;
+  --color-blue-dim: rgba(77, 166, 255, 0.1);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 7px;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+.font-syne {
+  font-family: var(--font-syne);
+}
+
+.sec-lbl {
+  font-family: var(--font-syne);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted2);
+  margin-bottom: 8px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius);
+  border: none;
+  background: var(--color-accent);
+  font-family: var(--font-syne);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #0a0a0a;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.action-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+.action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
