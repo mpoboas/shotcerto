@@ -68,7 +68,6 @@ temp/
 # --- Só desenvolvimento / referência local (não faz parte do deploy) ---
 docs/
 pb_schema/
-scripts/
 
 # --- Worker (espelha root) ---
 worker/node_modules/
