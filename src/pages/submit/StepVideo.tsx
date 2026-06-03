@@ -1,5 +1,9 @@
-import { useRef, type ChangeEvent } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  VideoFileInputs,
+  type VideoFileInputsHandle,
+} from "../../components/VideoFileInputs";
 import { TopBarBack } from "../../components/TopBarBack";
 import { StepIndicator } from "../../components/StepIndicator";
 import { TypeSelector } from "../../components/TypeSelector";
@@ -15,7 +19,6 @@ import { TARGET_MIN_SECONDS } from "../../lib/targetTime";
 export function StepVideo() {
   const navigate = useNavigate();
   const wizard = useSubmitWizard();
-  const inputRef = useRef<HTMLInputElement>(null);
   const {
     ffmpeg,
     pickFile,
@@ -27,11 +30,7 @@ export function StepVideo() {
     dismissError,
   } = useVideoCompress();
 
-  function onFileChange(e: ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0];
-    if (f) pickFile(f);
-    e.target.value = "";
-  }
+  const videoInputsRef = useRef<VideoFileInputsHandle>(null);
 
   const hasVideo = !!sourcePreviewSrc && !!wizard.file;
   const canContinue =
@@ -49,26 +48,29 @@ export function StepVideo() {
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 pb-4">
         <div>
           <p className="sec-lbl">Vídeo</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="video/*"
-            capture="environment"
-            className="hidden"
-            onChange={onFileChange}
+          <VideoFileInputs
+            ref={videoInputsRef}
+            onFile={(f) => void pickFile(f)}
           />
           {hasVideo ? (
             <VideoLoadedBox
               src={sourcePreviewSrc}
               fileName={wizard.file!.name}
               duration={duration}
-              onChangeFile={() => {
+              onPickGallery={() => {
                 clearFile();
-                inputRef.current?.click();
+                videoInputsRef.current?.pickFromGallery();
+              }}
+              onPickCamera={() => {
+                clearFile();
+                videoInputsRef.current?.pickFromCamera();
               }}
             />
           ) : (
-            <VideoUploadEmpty onPick={() => inputRef.current?.click()} />
+            <VideoUploadEmpty
+              onPickGallery={() => videoInputsRef.current?.pickFromGallery()}
+              onPickCamera={() => videoInputsRef.current?.pickFromCamera()}
+            />
           )}
           {probing && (
             <p className="mt-2 text-center text-xs text-muted2">

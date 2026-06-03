@@ -1,16 +1,19 @@
 import { useRef } from "react";
+import { VideoPickActions } from "./VideoPickActions";
 
 export function VideoLoadedBox({
   src,
   fileName,
   duration,
-  onChangeFile,
+  onPickGallery,
+  onPickCamera,
   compact,
 }: {
   src: string;
   fileName: string;
   duration: number | null;
-  onChangeFile: () => void;
+  onPickGallery: () => void;
+  onPickCamera: () => void;
   compact?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -59,26 +62,26 @@ export function VideoLoadedBox({
               </div>
             )}
           </div>
-          <button
-            type="button"
-            onClick={onChangeFile}
-            className="text-xs text-accent"
-          >
-            trocar
-          </button>
+          <VideoPickActions
+            onGallery={onPickGallery}
+            onCamera={onPickCamera}
+            className="max-w-[200px]"
+          />
         </div>
       )}
     </div>
   );
 }
 
-export function VideoUploadEmpty({ onPick }: { onPick: () => void }) {
+export function VideoUploadEmpty({
+  onPickGallery,
+  onPickCamera,
+}: {
+  onPickGallery: () => void;
+  onPickCamera: () => void;
+}) {
   return (
-    <button
-      type="button"
-      onClick={onPick}
-      className="relative flex h-[200px] w-full flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[var(--radius)] border border-border bg-[#0f1a0a]"
-    >
+    <div className="relative flex w-full flex-col items-center gap-4 overflow-hidden rounded-[var(--radius)] border border-border bg-[#0f1a0a] px-4 py-8">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -96,12 +99,15 @@ export function VideoUploadEmpty({ onPick }: { onPick: () => void }) {
           <polygon points="5 3 19 12 5 21 5 3" />
         </svg>
       </div>
-      <span className="relative z-[1] font-syne text-sm font-bold text-text">
-        Carregar vídeo
-      </span>
-      <span className="relative z-[1] text-xs text-muted2">
-        MP4 ou MOV · máx. 200 MB
-      </span>
-    </button>
+      <div className="relative z-[1] text-center">
+        <p className="font-syne text-sm font-bold text-text">Adicionar vídeo</p>
+        <p className="mt-1 text-xs text-muted2">MP4 ou MOV · máx. 200 MB</p>
+      </div>
+      <VideoPickActions
+        onGallery={onPickGallery}
+        onCamera={onPickCamera}
+        className="relative z-[1] max-w-sm"
+      />
+    </div>
   );
 }

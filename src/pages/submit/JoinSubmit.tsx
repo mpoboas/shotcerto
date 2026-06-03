@@ -1,5 +1,9 @@
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  VideoFileInputs,
+  type VideoFileInputsHandle,
+} from "../../components/VideoFileInputs";
 import { TopBarBack } from "../../components/TopBarBack";
 import { CompressProgressBar } from "../../components/CompressProgressBar";
 import { VideoRangePlayer } from "../../components/VideoRangePlayer";
@@ -26,7 +30,7 @@ export function JoinSubmit() {
   const { challengeId } = useParams<{ challengeId: string }>();
   const navigate = useNavigate();
   const ffmpeg = useFfmpeg(true);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const videoInputsRef = useRef<VideoFileInputsHandle>(null);
 
   const [challenge, setChallenge] = useState<ChallengeRecord | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -56,10 +60,7 @@ export function JoinSubmit() {
     setRange(next);
   }, []);
 
-  async function onFileChange(e: ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0];
-    e.target.value = "";
-    if (!f) return;
+  async function applyVideoFile(f: File) {
     if (f.size > MAX_INPUT_BYTES) {
       setError("Ficheiro demasiado grande.");
       return;
@@ -164,16 +165,12 @@ export function JoinSubmit() {
 
         <div>
           <p className="sec-lbl">Vídeo</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="video/*"
-            capture="environment"
-            className="hidden"
-            onChange={(e) => void onFileChange(e)}
-          />
+          <VideoFileInputs ref={videoInputsRef} onFile={applyVideoFile} />
           {!hasVideo ? (
-            <VideoUploadEmpty onPick={() => inputRef.current?.click()} />
+            <VideoUploadEmpty
+              onPickGallery={() => videoInputsRef.current?.pickFromGallery()}
+              onPickCamera={() => videoInputsRef.current?.pickFromCamera()}
+            />
           ) : null}
           {probing && (
             <p className="mt-2 text-center text-xs text-muted2">A ler vídeo…</p>

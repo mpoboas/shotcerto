@@ -67,8 +67,10 @@ Ordem recomendada:
    dentro de `worker/`. Anotar o URL final para `VITE_PRESIGN_URL`.
 3. **PocketBase** — criar as collections no admin (users, challenges,
    submissions, reactions, comments, etc.) conforme o modelo em produção.
-   Criar utilizadores no admin (sem registo público) e alguns desafios para
-   testar.
+   Na coleção `users`, ativar **registo público** (API rules → Create: vazio
+   ou `@request.auth.id = ""`) para a app poder criar contas. Adicionar campo
+   ficheiro `avatar` (opcional, max ~5 MB, tipos imagem) para foto no registo.
+   Alguns desafios para testar.
 4. **Netlify** — ligar o repo, definir `VITE_POCKETBASE_URL` e
    `VITE_PRESIGN_URL` nas env vars do site, build automático.
 
@@ -100,7 +102,7 @@ nem de `HTMLVideoElement.duration`.
 
 ## Checklist de validação manual
 
-1. Login com utilizador criado no admin do PocketBase.
+1. Criar conta em `/register` ou login em `/login`.
 2. Câmara abre no mobile via `capture="environment"`.
 3. Compressão mostra barra de progresso; tamanho final reduzido vs original.
 4. Upload PUT vai direto para R2 (verificar `dev tools → Network`); aparece
